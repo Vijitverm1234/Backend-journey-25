@@ -1,0 +1,4 @@
+Restfull Api : represational state
+have rules:
+1. server client architecture
+2. always repect all http methods
