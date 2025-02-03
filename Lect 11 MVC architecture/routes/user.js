@@ -1,6 +1,11 @@
 const express=require('express')
 const router=express.Router()
 const User = require('../models/user');
+
+/**
+ * can use the controller to make the function used by thr routes
+ */
+
 router.get('/users', async (req, res) => {
     try {
         const allUsers = await User.find({});
