@@ -62,6 +62,7 @@
 const express = require("express");
 const path=require('path')
 const app = express();
+const fs=require('fs')
 const PORT = 3000;
 const students = [
   {
@@ -84,9 +85,18 @@ const students = [
 // Configure Express to use EJS
 app.set("view engine", "ejs");
 app.set('views',path.resolve("./views"))
-app.get("/api", (req, res) => {
-  return res.render('home')
+app.get('/users', (req, res) => {
+  fs.readFile(path.join(__dirname, 'views', 'users.json'), 'utf8', (err, data) => {
+      if (err) {
+          return res.status(500).send('Error reading users.json');
+      }
+
+      const users = JSON.parse(data); 
+      res.render('home', { users }); 
+  });
 });
+
+
 
 app.listen(PORT, (req, res) => {
   console.log("App Started on App:" + PORT);
