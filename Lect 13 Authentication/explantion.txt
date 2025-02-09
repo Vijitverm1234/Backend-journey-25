@@ -1,0 +1,8 @@
+Authentication => statefull and stateless
+statefull have state in server site
+stateless have no stateless
+
+for statefull have some state eg Parking system (ticket)
+state : data that marks something 
+ client ->>>>>(user , password)>>>>> server 
+        <<<<<<<<<(session uid)<<<<<<

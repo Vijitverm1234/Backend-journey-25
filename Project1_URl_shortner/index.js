@@ -1,28 +1,50 @@
 const express = require('express');
 const app = express();
 const port = 8002;
+const path = require('path');
 const { connectMongoDb } = require('./connect');
 const urlRouter = require('./routes/url');
-const URL=require('./models/url')
-connectMongoDb('mongodb://localhost:27017')
+const userRouter = require('./routes/user');
+const URL = require('./models/url');
+
+// Connect to MongoDB
+connectMongoDb('mongodb://localhost:27017/URLAPPLICATION')
     .then(() => console.log("✅ Database connected"))
     .catch(err => console.error("❌ Database connection failed", err));
 
-app.use(express.json()); // ✅ Important: Middleware to parse JSON
+// Middleware
+app.use(express.json());  // Allows Express to parse JSON body
+app.use(express.urlencoded({ extended: true })); // Allows form data parsing
 
-app.use("/url", urlRouter); // Define routes after middleware
-app.get('/:shortID',async(req,res)=>{
-    const shortId=req.params.shortId;
-    const entry=await URL.findOneAndUpdate(
-    {
-        shortId
-    },{$push:{
-        visitHistory:{
-            timestamp:Date.now(),
+// Route Handlers
+app.use("/url", urlRouter);
+app.use("/user", userRouter); 
+
+// Setting up the view engine
+app.set("view engine", "ejs");
+app.set('views', path.resolve("./views"));
+
+// URL Shortener Redirection
+app.get('/:shortID', async (req, res) => {
+    const shortId = req.params.shortID;
+    const entry = await URL.findOneAndUpdate(
+        { shortId },
+        {
+            $push: {
+                visitHistory: {
+                    timestamp: Date.now(),
+                }
+            }
         }
-    }})
-    res.redirect(entry.redirectURL);
-})
+    );
+    if (entry) {
+        res.redirect(entry.redirectURL);
+    } else {
+        res.status(404).send("URL not found");
+    }
+});
+
+// Start the server
 app.listen(port, () => {
     console.log(`🚀 Server running at http://localhost:${port}`);
 });
