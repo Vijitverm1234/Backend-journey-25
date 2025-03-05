@@ -9,17 +9,59 @@
             background-color: #121212;
             color: white;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
-        }
-        h1 {
             text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        input[type="file"] {
+            border: 1px solid #444;
+            background: #2a2a2a;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button {
+            background: #007bff;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #0056b3;
         }
     </style>
 </head>
 <body>
     <h1>Welcome! Signup Successful 🎉</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="profileImage" accept="image/*">
+        <button type="submit">Upload</button>
+    </form>
 </body>
 </html>

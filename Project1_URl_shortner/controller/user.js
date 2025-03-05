@@ -1,5 +1,6 @@
 const User = require('../models/user');
-
+const {v4:uuidv4}=require('uuid')
+const { setUser }=require('../service/auth')
 async function handleCreateUserSignup(req, res) {
     try {
         const { name, email, password } = req.body;
@@ -35,7 +36,9 @@ async function handleCreateUserSignin(req, res) {
 
         // Create a new user
         
-
+        const sessionId=uuidv4();
+        setUser(sessionId,user)
+        res.cookie("uid",sessionId)
         // Render the home page after successful signup
         return res.json({msg : user.name});
 
